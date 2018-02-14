@@ -5,7 +5,7 @@ var senseBoxID = "59be7e67d67eb50011d72f40";
 
 api.getBox(senseBoxID, displayData);
 
-pg.showPopup("popup_select_this_sb");
+pg.addCloseAction(pg.showPopup("popup_select_this_sb"));
 
 function createTableElement (text, align)
 {
