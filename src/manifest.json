@@ -3,7 +3,8 @@
   "name": "openSenseMap Extension",
   "version": "0.1",
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage"
   ],
 
   "browser_action": {

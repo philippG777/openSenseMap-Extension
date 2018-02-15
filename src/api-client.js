@@ -18,7 +18,6 @@ function openSenseMapAPIClient ()
 
     self.getBox = function (senseBoxID, callback)
     {
-        // https://api.opensensemap.org/boxes/59be7e67d67eb50011d72f40
         self._get("https://api.opensensemap.org/boxes/" + senseBoxID, callback);
     }
 }

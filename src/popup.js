@@ -1,24 +1,73 @@
 "use strict";
 
-var api = new openSenseMapAPIClient();
-var tm = new TableManager(document.getElementById("sb_table"));
-var senseBoxID = "59be7e67d67eb50011d72f40";
-
-// console.log(window.location.pathname
-browser.tabs.query({active: true, currentWindow: true},function (tabs)
+function getSelectedSenseBoxID (callback)
 {
-	var url = tabs[0].url;
-	if(/ *opensensemap.org\/explore\/*/g.test(url))	// check url
+	return browser.storage.local.get(function(res)
 	{
-		pg.addCloseAction(pg.showPopup("popup_select_this_sb"));
-		var id = url.split("/")[4];
-		console.log(id);
-	}
-});
+		callback((res.senseBox != undefined)? res.senseBox.ID : undefined);
+	});
+}
 
-api.getBox(senseBoxID, function displayData(data)
+
+function setSelectedSenseBoxID (sb_id)
 {
-	console.log(data);
-	document.getElementById("sb_title").innerHTML = data.name;
-	tm.fillTable(data)
+	browser.storage.local.set({
+		senseBox: {ID: sb_id}
+	});
+}
+
+function showSBData (sb_id)
+{
+	var tm = new TableManager(document.getElementById("sb_table"));
+	var api = new openSenseMapAPIClient();
+	api.getBox(sb_id, function displayData(data)
+	{
+		document.getElementById("sb_title").innerHTML = data.name;
+		tm.fillTable(data)
+	});
+}
+
+
+getSelectedSenseBoxID(function (senseBoxID)
+{
+	browser.tabs.query({active: true, currentWindow: true},function (tabs)
+	{
+		var url = tabs[0].url;
+		if(/https:\/\/opensensemap.org\/explore\/*/.test(url))	// check url
+		{
+			var id = url.split("/")[4];
+			if (id != senseBoxID)
+			{
+				var popup = pg.showPopup("popup_select_sb");
+				pg.addCloseAction(popup);
+				document.getElementById("btn_select_sb").addEventListener("click", function(ev)
+				{
+					ev.stopPropagation();
+					setSelectedSenseBoxID(id);	// set new sb on button click
+					pg.hidePopup(popup);
+					showSBData(id);
+				});
+			}
+			else
+			{
+				pg.addCloseAction(pg.showPopup("popup_sb_already_selected"));
+			}
+
+			if (senseBoxID != undefined)
+				showSBData(senseBoxID);
+		}
+		else if (senseBoxID == undefined)
+		{
+			pg.showPopup("popup_no_sb_selected");
+			document.getElementById("btn_link_to_osm").addEventListener("click", function (ev)
+			{
+				window.open("https://opensensemap.org/","_blank");	// open in new tab
+				window.close();	// close popup
+			});
+		}
+		else
+		{
+			showSBData(senseBoxID);
+		}
+	});
 });

@@ -16,7 +16,7 @@ function TableManager (table)
 
 	self._createTableHeader = function (text, align)
 	{
-		var element = document.createElement("TD");
+		var element = document.createElement("TH");
 		var textNode = document.createTextNode(text);
 		element.appendChild(textNode);
 		if (align == "right")
@@ -26,7 +26,7 @@ function TableManager (table)
 
 	self._createHeader = function ()
 	{
-		var row = document.createElement("TH");
+		var row = document.createElement("TR");
 		row.appendChild(self._createTableHeader("Metric"));
 		row.appendChild(self._createTableHeader("Sensor"));
 		var lastMeasurement = self._createTableHeader("last Measurement");

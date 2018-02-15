@@ -3,18 +3,34 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="pg.css@1.0.1/pg.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<script type="text/javascript" src="pg.css@1.0.1/pg.min.js"></script>
 	<script type="text/javascript" src="api-client.js"></script>
 	<script type="text/javascript" src="table-manager.js"></script>
 </head>
-<body>
-	<h1 id="sb_title" class="margin"></h1>
-	<table id="sb_table" class="txt-center"></table>
+<body class="margin">
+	<h1 id="sb_title" class="margin txt-center"></h1>
+	<table id="sb_table" class="txt-center">
+	</table>
 
-	<div id="popup_select_this_sb" class="popup">
+	<div id="popup_select_sb" class="popup">
 		<div class="content">
 			<span class="close-button">Close (X)</span>
-			<button class="button dark font-xl margin-xl">Use this senseBox</button>
+			<button id="btn_select_sb" class="button dark font-xl margin-xl">Select this senseBox</button>
+		</div>
+	</div>
+
+	<div id="popup_no_sb_selected" class="popup">
+		<div class="content">
+			<button id="btn_link_to_osm"
+				class="button dark font-xl margin-xl">You have to select a senseBox!</button>
+		</div>
+	</div>
+
+	<div id="popup_sb_already_selected" class="popup">
+		<div class="content">
+			<span class="close-button">Close (X)</span>
+			<p class="font-xl margin-xl txt-center">This senseBox is already selected.</p>
 		</div>
 	</div>
 	
